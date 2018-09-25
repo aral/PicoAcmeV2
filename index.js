@@ -82,7 +82,7 @@ ecdsa.prototype.toCSR = function toCSR(domain, isRaw) {
 }
 
 ecdsa.prototype.toThumbprint = function toThumbprint() {
-  return safe64(crypto.createHash('sha256').update(JSON.stringify(accountKey.toJWK(true))).digest('base64'));
+  return safe64(crypto.createHash('sha256').update(JSON.stringify(this.toJWK(true))).digest('base64'));
 }
 
 ecdsa.prototype.toJWK = function toJWK(isPublic) {
