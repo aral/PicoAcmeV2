@@ -11,9 +11,9 @@ var accD       = false, // Buffer.from(accountKey.d.toString('hex'), 'hex'),
     accountKey = new pAcme.ecdsa(accD, accX, accY);
     
 // Domain key    
-var exampleD   = false, // Buffer.from(accountKey.d.toString('hex'), 'hex'),
-    exampleX   = false, // Buffer.from(accountKey.x.toString('hex'), 'hex'),
-    exampleY   = false, // Buffer.from(accountKey.y.toString('hex'), 'hex'),
+var exampleD   = false, // Buffer.from(exampleKey.d.toString('hex'), 'hex'),
+    exampleX   = false, // Buffer.from(exampleKey.x.toString('hex'), 'hex'),
+    exampleY   = false, // Buffer.from(exampleKey.y.toString('hex'), 'hex'),
     exampleKey = new pAcme.ecdsa(exampleD, exampleX, exampleY);
     
 // ------------------------------------------------------------------------
