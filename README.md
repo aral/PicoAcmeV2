@@ -4,7 +4,7 @@ Micro tool for ACME V2, wide commented, zero-dependencies and batteries included
 With an api that makes you fall in love:
 
 ## WARNING: This tool is a work in progress, not its ready too, when it is, i remove this warning.
-### Last update: 17/09/2018
+### Last update: 27/09/2018
 
 ```Javascript
 // ------------------------------------------------------------------------
@@ -70,7 +70,7 @@ const  Acme = require('pico-acme-v2'),
         **/
       
         // Do some task after finish the challenge, for my hosting provider, i remove the DNS record.
-        var challengeDomainId = Acme.manager.getAttribute(Acme.CERTIFICATE, 'example-name', 'challengeRecordId'),
+        var challengeDomainId = Acme.manager.getAttribute(Acme.CERTIFICATE, 'example-name', 'challengeDomainId'),
             challengeRecordId = Acme.manager.getAttribute(Acme.CERTIFICATE, 'example-name', 'challengeRecordId');
         
         DonWeb.removeRecord(challengeDomainId, challengeRecordId)
