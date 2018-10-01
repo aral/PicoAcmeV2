@@ -7,13 +7,15 @@ With an api that makes you fall in love:
 ### Last update: 27/09/2018
 
 ```Javascript
+
 // ------------------------------------------------------------------------
 
 // Load module and link with ACME provider directory.
 const  Acme = require('pico-acme-v2'),
-      lAcme = new Acme('https://acme-v02.api.letsencrypt.org/directory'),
-      // Optional, my hosting provider API.
-      DonWeb = require('donweb');
+      lAcme = new Acme('letsencrypt', 'https://acme-v02.api.letsencrypt.org/directory');
+      
+// Optional, my hosting provider API.
+const DonWeb = require('donweb');
 
 //-----------------------------------
 
@@ -21,7 +23,8 @@ const  Acme = require('pico-acme-v2'),
 (function() {
   
   // Load your account, pico acme do all the job for you, only set your webmaster name.
-  var account = new lAcme.account(Acme.manager(Acme.ACCOUNT, 'webmaster-name'));
+  var accManager = new Acme.manager(Acme.manager.ACCOUNT, 'webmaster-name'),
+      account = new lAcme.account(accManager, 'nehuen@craving.com.ar');
 
   // When your account is ready, start the job.
   account.on('ready', function(accId /* Your account id */) {
@@ -34,7 +37,8 @@ const  Acme = require('pico-acme-v2'),
       // Define your domains for the certificate, is an array and accept wildcards.
       // Load your certificate, pico acme do all the job for you, only set your certificate name.
       var domains = [ 'example.com', '*.example.com' ],
-          certificate = new lAcme.certificate(account, Acme.manager(Acme.CERTIFICATE, 'example-name'), domains);
+          crtManager = new Acme.manager(Acme.manager.CERTIFICATE, 'example-name'),
+          certificate = new lAcme.certificate(account, crtManager, domains);
 
       // When the certificate is expired (and also the first time when we need create it)
       certificate.on('expire', function() {
@@ -49,8 +53,8 @@ const  Acme = require('pico-acme-v2'),
         DonWeb.addRecord(challenge.domain, challenge.record, 'TXT', challenge.token, 900, 0)
               .then(function(challengeRecordId) {
                 // When add a DNS record, recive an id of it, pico-acme can link it with the certificate.
-                Acme.manager.addAttribute(Acme.CERTIFICATE, 'example-name', 'challengeDomainId', challenge.domain);
-                Acme.manager.addAttribute(Acme.CERTIFICATE, 'example-name', 'challengeRecordId', challengeRecordId);
+                crtManager.addAttribute('challengeDomainId', challenge.domain);
+                crtManager.addAttribute('challengeRecordId', challengeRecordId);
                 
                 // Say what the challenge is ready.
                 certificate.challengeReady();
@@ -72,14 +76,14 @@ const  Acme = require('pico-acme-v2'),
         **/
       
         // Do some task after finish the challenge, for my hosting provider, i remove the DNS record.
-        var challengeDomainId = Acme.manager.getAttribute(Acme.CERTIFICATE, 'example-name', 'challengeDomainId'),
-            challengeRecordId = Acme.manager.getAttribute(Acme.CERTIFICATE, 'example-name', 'challengeRecordId');
+        var challengeDomainId = crtManager.getAttribute('challengeDomainId'),
+            challengeRecordId = crtManager.getAttribute('challengeRecordId');
         
         DonWeb.removeRecord(challengeDomainId, challengeRecordId)
               .then(function() {
                 // After that, i clear the links of the certificate with temp attributes.
-                Acme.manager.remAttribute(Acme.DOMAIN, 'example-name', 'challengeDomainId');
-                Acme.manager.remAttribute(Acme.DOMAIN, 'example-name', 'challengeRecordId');
+                crtManager.remAttribute('challengeDomainId');
+                crtManager.remAttribute('challengeRecordId');
               });
       });
       
@@ -100,4 +104,5 @@ const  Acme = require('pico-acme-v2'),
 //-----------------------------------
 
 // ------------------------------------------------------------------------
+
 ```
