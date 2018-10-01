@@ -46,7 +46,7 @@ const  Acme = require('pico-acme-v2'),
       certificate.on('pending', function(challenge) {
         // Do some task for complete the challenge, for my hosting provider, i build an API for auto complete the challenge.
         // Also, you can do it manually, in this case, only say what the challenge is ready and pico acme will wait.
-        DonWeb.addRecord(challenge.domain, challenge.record, 'TXT', challenge.rcvalue, 900, 0)
+        DonWeb.addRecord(challenge.domain, challenge.record, 'TXT', challenge.token, 900, 0)
               .then(function(challengeRecordId) {
                 // When add a DNS record, recive an id of it, pico-acme can link it with the certificate.
                 Acme.manager.addAttribute(Acme.CERTIFICATE, 'example-name', 'challengeDomainId', challenge.domain);
