@@ -11,7 +11,9 @@ With an api that makes you fall in love:
 
 // Load module and link with ACME provider directory.
 const  Acme = require('pico-acme-v2'),
-      lAcme = new Acme('https://acme-v02.api.letsencrypt.org/directory');
+      lAcme = new Acme('https://acme-v02.api.letsencrypt.org/directory'),
+// Optional, my hosting provider API.
+      DonWeb = require('donweb');
 
 //-----------------------------------
 
